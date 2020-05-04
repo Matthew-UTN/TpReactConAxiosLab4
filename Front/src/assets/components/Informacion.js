@@ -14,7 +14,7 @@ var imagen = {
     marginTop: '20px', 
     marginBottom:'20px',
     marginLeft:'150px',
-  }
+}
 
   var descripcion = {
     width: '400px',  
@@ -59,12 +59,9 @@ class Informacion extends Component{
     }
 
     render(){
-        //const parametroId = this.props.match.params.id;
-        //const instrumentoEncontrado = this.state.instrumentosDB.filter(instrumento => instrumento.id === parametroId);
-
         let envio;
         if(this.state.instrumentoEncontrado[0].costoEnvio === 'G'){
-          envio = <Typography><LocalShippingIcon/> Envió gratis</Typography>;
+          envio = <Typography style={{color:'green'}} ><LocalShippingIcon/> Envió gratis</Typography>;
         }else{
           envio = `Costo de Envio Interior de Argentina $${this.state.instrumentoEncontrado[0].costoEnvio}`;
         }

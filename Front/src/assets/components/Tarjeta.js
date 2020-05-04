@@ -24,7 +24,7 @@ class Tarjeta extends Component {
   render(){
     let envio;
     if( this.props.costoEnvio === 'G'){
-      envio = <Typography><LocalShippingIcon/> Envió gratis a todo el país</Typography>;
+      envio = <Typography style={{ color: 'green'}}><LocalShippingIcon/> Envió gratis a todo el país</Typography>;
     }else{
       envio = `Costo de Envio Interior de Argentina $${this.props.costoEnvio}`;
     }
