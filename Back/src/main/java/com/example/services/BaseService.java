@@ -51,7 +51,7 @@ public abstract class BaseService <ENTITY extends Base, DTO extends BaseDTO> imp
 	}
 	
 	@Transactional
-	public DTO findById(int id) throws Exception {
+	public DTO findById(Long id) throws Exception {
 		
 		Optional<ENTITY> entityOptional = repository.findById(id);
 		
@@ -85,6 +85,74 @@ public abstract class BaseService <ENTITY extends Base, DTO extends BaseDTO> imp
 		} catch (Exception e) {
 
 			System.out.println(e);
+			throw new Exception();
+
+		}
+
+	}
+
+	@Transactional
+	public DTO update (Long id, DTO dto) throws Exception {
+
+		Optional<ENTITY> entityOptional = repository.findById(id);
+		ModelMapper modelMapper = new ModelMapper();
+
+		try {
+
+			ENTITY entity = entityOptional.get();
+			ENTITY entityParams = (ENTITY) modelMapper.map(dto, entityClass);
+
+			try {
+
+				if (repository.existsById(id)) {
+
+					entityParams.setId(id);
+					entity = (ENTITY) repository.save(entityParams);
+					return (DTO) modelMapper.map(entity, dtoClass);
+
+				}
+				else {
+
+					throw new Exception();
+
+				}
+
+
+			} catch (Exception e) {
+
+				throw new Exception();
+
+			}
+
+
+		} catch (Exception e) {
+
+			throw new Exception();
+
+		}
+
+	}
+
+	@Transactional
+	public boolean delete(Long id) throws Exception {
+
+		try {
+
+			if (repository.existsById(id)) {
+
+				repository.deleteById(id);
+				return true;
+
+			}
+
+			else {
+
+				throw new Exception();
+
+			}
+
+		} catch (Exception e) {
+
 			throw new Exception();
 
 		}

@@ -35,7 +35,7 @@ public abstract class BaseController <DTO>{
 	@GetMapping("/{id}")
 	@CrossOrigin(origins = "*")
 	@Transactional
-	public ResponseEntity getOne(@PathVariable int id) {
+	public ResponseEntity getOne(@PathVariable Long id) {
 		
 		try {
 			
@@ -62,6 +62,44 @@ public abstract class BaseController <DTO>{
 		} catch (Exception e) {
 
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"Error. Please check the BODY request, and try again later.\"}");
+
+		}
+
+
+
+	}
+
+	@PutMapping("/{id}")
+	@CrossOrigin(origins = "*")
+	@Transactional
+	public ResponseEntity put(@PathVariable Long id, @RequestBody DTO dto) {
+
+		try {
+
+			DTO result = (DTO) service.update(id, dto);
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+
+		} catch (Exception e) {
+
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"Error. Please check the ID or BODY request, and try again later.\"}");
+
+		}
+
+	}
+
+	@DeleteMapping("/{id}")
+	@CrossOrigin(origins = "*")
+	@Transactional
+	public ResponseEntity delete(@PathVariable Long id) {
+
+		try {
+
+			service.delete(id);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
+
+		} catch (Exception e) {
+
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"Error. Please check the ID or BODY request, and try again later.\"}");
 
 		}
 
