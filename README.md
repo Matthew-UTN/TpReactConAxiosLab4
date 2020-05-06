@@ -2,11 +2,11 @@ Pasos para correr el proyecto:
 
 ## Paso N°1
 
-Abrir la carpeta Back en intellij.
+Abrir xampp y hacer correr mysql y SQLYog y importar la base de datos incluida en el proyecto.
 
 ## Paso N°2
 
-abrir xampp y hacer correr mysql y SQLYog y importar la base de datos incluida en el proyecto.
+Abrir la carpeta Back en intellij y pulsar el boton de correr.
 
 ## Paso N°3
 
