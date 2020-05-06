@@ -67,7 +67,7 @@ class Informacion extends Component{
     }
 
 
-    handleInputChange(event) {
+    handleInputChange(event) {// para guardar lo que esta escribiendo el usuario
         const target = event.target;
         debugger;
         const value = target.value;
@@ -79,7 +79,7 @@ class Informacion extends Component{
     }
 
     confirm = () => {
-        confirmAlert({
+        confirmAlert({ // un componente de react especial
           title: '¿Eliminar?',
           message: '¿Estas seguro de eliminar este producto?',
           buttons: [
@@ -88,8 +88,7 @@ class Informacion extends Component{
               onClick: () => this.handleDelete()
             },
             {
-              label: 'No',
-            
+              label: 'No',  
             }
           ]
         });
@@ -98,7 +97,6 @@ class Informacion extends Component{
 
 
     handleDelete = () => {
-
         console.log(this.state.instrumento) //to see if i have the right instrument
         debugger;
         this.Service.delete(this.props.match.params.id)
@@ -119,7 +117,7 @@ class Informacion extends Component{
              "cantidadVendida": this.state.tempCantidadVendida,
              "descripcion": this.state.tempDescripcion
          }).then(res => {
-            this.setState({
+            this.setState({ // esto actualiza la pagina sin hacer un refresh
                 instrumentoEncontrado:{
                     instrumento:this.state.tempInstrumento,
                     marca: this.state.tempMarca,
@@ -140,7 +138,7 @@ class Informacion extends Component{
         this.Service.getOne(this.props.match.params.id)
             .then(res => {
                 this.setState({
-                    instrumentoEncontrado: res,// Once out of the component did mount instrumentoData will no longer exist
+                    instrumentoEncontrado: res,
                     tempInstrumento: res.instrumento,
                     tempMarca: res.marca,
                     tempModelo: res.modelo,
@@ -158,7 +156,7 @@ class Informacion extends Component{
     render(){
         let envio;
         if(this.state.instrumentoEncontrado.costoEnvio === 'G'){
-          envio = <Typography style={{color:'green'}} ><LocalShippingIcon/> Envió gratis</Typography>;
+          envio = <Typography style={{color:'green'}} ><LocalShippingIcon/> Envió gratis</Typography>; // uso el icono de react material
         }else{
           envio = `Costo de Envio Interior de Argentina $${this.state.instrumentoEncontrado.costoEnvio}`;
         }
@@ -174,12 +172,13 @@ class Informacion extends Component{
                                     component="img"
                                     image={require(`../img/${this.state.instrumentoEncontrado.imagen}`)}
                                     alt={this.state.instrumentoEncontrado.nombre}
-                                    
                                 />
                             </Card>
                         </Grid>
                         <Grid item xs={1}></Grid>
                         <Grid style={descripcion} item xs={6}>
+
+                            
                             <Typography variant="h8" color="initial" component="p">
                             {this.state.instrumentoEncontrado.cantidadVendida} vendidos
                             </Typography>

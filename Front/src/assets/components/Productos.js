@@ -68,7 +68,7 @@ class Home extends Component {
             "cantidadVendida": this.state.cantidadVendida,
             "descripcion": this.state.descripcion
         }).then(res => {
-            this.setState({
+            this.setState({ // actualiza la pagina sin hacer un refresh
                 instrumentosDB: this.state.instrumentosDB.concat({
                     "instrumento":this.state.instrumento,
                     "marca": this.state.marca,
@@ -103,7 +103,7 @@ class Home extends Component {
 
     render() {
 
-        const instrumentos = this.state.instrumentosDB.map((instrumentos, i) => { // this saves everything from the json to a local variable
+        const instrumentos = this.state.instrumentosDB.map((instrumentos, i) => { // this saves everything from the mysql request to a local variable
             return ( 
             <Tarjeta 
                 key = {
