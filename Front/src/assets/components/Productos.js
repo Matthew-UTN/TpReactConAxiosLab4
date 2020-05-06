@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import Navigation from './Navigation';
-import axios from 'axios';
 import Tarjeta from './Tarjeta';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Modal from 'react-modal';
-import { Row, Col, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Col, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Service } from "./service";
 
 class Home extends Component {
 
@@ -31,19 +31,20 @@ class Home extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleOpenModal = this.handleOpenModal.bind(this);
         this.handleCloseModal = this.handleCloseModal.bind(this);
+        this.Service = new Service();
     }
 
     handleOpenModal () {
         this.setState({ showModal: true });
-      }
+    }
       
-      handleCloseModal () {
+    handleCloseModal () {
         this.setState({ showModal: false });
         console.log(this.state.exampleInstrumento)
-      }
+    }
 
 
-      handleInputChange(event) {
+    handleInputChange(event) {
         const target = event.target;
         debugger;
         const value = target.value;
@@ -52,13 +53,12 @@ class Home extends Component {
             [target.name]: value
         });
         console.log(target.name);
-        }
+    }
 
-      handleSubmit = (event) => {
+    handleSubmit = (event) => {
 
-        console.log(this.state.instrumento)
         event.preventDefault();
-        axios.post(`http://localhost:9001/api/v1/instrumentos/`, {
+        this.Service.save({
             "instrumento":this.state.instrumento,
             "marca": this.state.marca,
             "modelo": this.state.modelo,
@@ -67,23 +67,31 @@ class Home extends Component {
             "costoEnvio": this.state.costoEnvio,
             "cantidadVendida": this.state.cantidadVendida,
             "descripcion": this.state.descripcion
+        }).then(res => {
+            this.setState({
+                instrumentosDB: this.state.instrumentosDB.concat({
+                    "instrumento":this.state.instrumento,
+                    "marca": this.state.marca,
+                    "modelo": this.state.modelo,
+                    "imagen": this.state.imagen,
+                    "precio": this.state.precio,
+                    "costoEnvio": this.state.costoEnvio,
+                    "cantidadVendida": this.state.cantidadVendida,
+                    "descripcion": this.state.descripcion
+                })
+              })
+            alert("Producto agregado");
         })
-            .then(res => {
-                console.log(res);
-                console.log(res.data);
-                alert("Emails enviados");
-            })
-
+        this.handleCloseModal();
     }
 
       
 
     componentDidMount() {
         let instrumentosData = [];
-        axios.get(`http://localhost:9001/api/v1/instrumentos/`)
+        this.Service.getAll()
             .then(res => {
-                console.log(res.data); // res.data has the info that was brought by the GET method
-                instrumentosData = res.data.map((mover) => {// i use map as the for each to save array to a local variable to be used later
+                instrumentosData = res.map((mover) => {// i use map as the for each to save array to a local variable to be used later
                     return mover
                 });
                 this.setState({
@@ -162,13 +170,9 @@ class Home extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="exampleimagen" sm={2}>imagen:</Label>
+                                <Label for="exampleimagen" sm={2}>Nombre del imagen:</Label>
                                 <Col sm={10}>
-                                    <Input type="file" name="imagen" value={this.state.imagen} onChange={this.handleInputChange} placeholder="imagen" />
-                                    <FormText color="muted">
-                                        This is some placeholder block-level help text for the above input.
-                                        It's a bit lighter and easily wraps to a new line.
-                                    </FormText>
+                                    <Input type="text" name="imagen" value={this.state.imagen} onChange={this.handleInputChange} placeholder="Nombre del imagen" />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
