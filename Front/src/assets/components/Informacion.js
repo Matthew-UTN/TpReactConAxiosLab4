@@ -26,6 +26,15 @@ var descripcion = {
     marginBottom:'20px',
 }
 
+const customStyles = {
+    content : {
+    top: '100px',
+    left: '400px',
+    right: '400px',
+    bottom: 'auto',
+    }
+};
+
 class Informacion extends Component{
     constructor() {
         super();
@@ -48,6 +57,7 @@ class Informacion extends Component{
                 "cantidadVendida": "",
                 "descripcion": ""
             },
+            
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -95,12 +105,15 @@ class Informacion extends Component{
     };
 
 
-
     handleDelete = () => {
         console.log(this.state.instrumento) //to see if i have the right instrument
+        const id =this.props.match.params.id;
         debugger;
-        this.Service.delete(this.props.match.params.id)
-        .then(alert("Producto eliminado exitosamente"))
+        this.Service.delete(id)
+        .then(
+            alert("Producto eliminado exitosamente"),
+            this.props.history.push("/home")
+        )
     }
 
     handleSubmit = () => {
@@ -226,7 +239,7 @@ class Informacion extends Component{
                             <Button variant="outlined" style={{ background: 'rgb(63, 81, 181)', color:'white', marginLeft:'20px'}} onClick={this.confirm}> Eliminar </Button>
                             <Button variant="outlined" style={{ background: 'rgb(63, 81, 181)', color:'white', marginLeft:'20px'}} onClick={this.handleOpenModal}> Modificar </Button>
 
-                            <Modal isOpen={this.state.showModal} contentLabel="modal" style={{inset:'400px'}}>
+                            <Modal isOpen={this.state.showModal} contentLabel="modal" style={customStyles} onRequestClose={this.handleCloseModal}>
                                 <Form>
                                     <FormGroup row>
                                         <Label for="exampleInstrumento" sm={2}>Nombre del instrumento:</Label>
@@ -273,7 +286,7 @@ class Informacion extends Component{
                                     <FormGroup row>
                                         <Label for="exampleDescripcion" sm={2}>Descripcion:</Label>
                                         <Col sm={10}>
-                                            <Input type="text" name="tempDescripcion" defaultValue={this.state.instrumentoEncontrado.descripcion} onChange={this.handleInputChange} placeholder="Descripcion" />
+                                            <textarea name="tempDescripcion" defaultValue={this.state.instrumentoEncontrado.descripcion} onChange={this.handleInputChange} placeholder="Descripcion" style={{width:'100%'}}/>
                                         </Col>
                                     </FormGroup>
                                 </Form>

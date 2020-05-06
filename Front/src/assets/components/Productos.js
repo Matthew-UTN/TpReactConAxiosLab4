@@ -8,6 +8,15 @@ import Modal from 'react-modal';
 import { Col, Form, FormGroup, Label, Input } from 'reactstrap';
 import { Service } from "./service";
 
+const customStyles = {
+    content : {
+    top: '100px',
+    left: '400px',
+    right: '400px',
+    bottom: 'auto',
+    }
+};
+
 class Home extends Component {
 
     constructor() {
@@ -46,7 +55,6 @@ class Home extends Component {
 
     handleInputChange(event) {
         const target = event.target;
-        debugger;
         const value = target.value;
 
         this.setState({
@@ -68,9 +76,11 @@ class Home extends Component {
             "cantidadVendida": this.state.cantidadVendida,
             "descripcion": this.state.descripcion
         }).then(res => {
+            debugger;
             this.setState({ // actualiza la pagina sin hacer un refresh
                 instrumentosDB: this.state.instrumentosDB.concat({
-                    "instrumento":this.state.instrumento,
+                    "id": res.id,
+                    "instrumento": this.state.instrumento,
                     "marca": this.state.marca,
                     "modelo": this.state.modelo,
                     "imagen": this.state.imagen,
@@ -88,14 +98,10 @@ class Home extends Component {
       
 
     componentDidMount() {
-        let instrumentosData = [];
         this.Service.getAll()
             .then(res => {
-                instrumentosData = res.map((mover) => {// i use map as the for each to save array to a local variable to be used later
-                    return mover
-                });
                 this.setState({
-                    instrumentosDB: instrumentosData,// Once out of the component did mount instrumentoData will no longer exist
+                    instrumentosDB: res,// Once out of the component did mount instrumentoData will no longer exist
                 })
                 console.log(this.state.instrumentosDB);
             })
@@ -139,7 +145,7 @@ class Home extends Component {
             )
         });
 
-
+//<Input type="text" name="descripcion" value={this.state.descripcion} onChange={this.handleInputChange} placeholder="Descripcion" />
         return(
             <React.Fragment>
                 <Navigation></Navigation>
@@ -149,7 +155,7 @@ class Home extends Component {
                         <Button variant="outlined" style={{marginTop: '30px', background: 'rgb(63, 81, 181)', color:'white'}} onClick={this.handleOpenModal}>
                             Agregar nuevo producto
                         </Button>
-                        <Modal isOpen={this.state.showModal} contentLabel="modal" style={{inset:'400px'}}>
+                        <Modal isOpen={this.state.showModal} contentLabel="modal" style={customStyles} onRequestClose={this.handleCloseModal}>
                         <Form>
                             <FormGroup row>
                                 <Label for="exampleInstrumento" sm={2}>Nombre del instrumento:</Label>
@@ -196,7 +202,7 @@ class Home extends Component {
                             <FormGroup row>
                                 <Label for="exampleDescripcion" sm={2}>Descripcion:</Label>
                                 <Col sm={10}>
-                                    <Input type="text" name="descripcion" value={this.state.descripcion} onChange={this.handleInputChange} placeholder="Descripcion" />
+                                    <textarea name="descripcion" value={this.state.descripcion} onChange={this.handleInputChange} placeholder="Descripcion" style={{width:'100%'}}/>
                                 </Col>
                             </FormGroup>
                         </Form>

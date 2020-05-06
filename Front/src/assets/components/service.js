@@ -8,12 +8,12 @@ export class Service {
     return axios.get(this.baseUrl + id).then((res) => res.data);
   }
   save(instrumento) {
-    return axios.post(this.baseUrl, instrumento).then(console.log);
+    return axios.post(this.baseUrl, instrumento).then((res) => res.data);
   }
   update(id, instrumento) {
     return axios.put(this.baseUrl + id, instrumento).then(console.log);
   }
   delete(id) {
-    axios.delete(this.baseUrl + id).then(console.log);
+    return axios.delete(this.baseUrl + id).then(console.log);
   }
 }
