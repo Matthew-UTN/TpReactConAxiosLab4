@@ -14,6 +14,7 @@ var cardStyle = { // Fix this so there is only one style
   marginRight:'20px',
 }
 var cardStyle2 = {
+  maxHeight:'500px',
   width: '400px', 
   marginTop: '20px', 
   marginBottom:'20px',

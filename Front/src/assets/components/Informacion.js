@@ -13,14 +13,6 @@ import { Col, Form, FormGroup, Label, Input } from 'reactstrap';
 import { Service } from "./service";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-
-var imagen = {
-    width: '400px', 
-    marginTop: '20px', 
-    marginBottom:'20px',
-    marginLeft:'150px',
-}
-
 var descripcion = {
     width: '400px',  
     marginTop: '100px',
@@ -127,7 +119,7 @@ class Informacion extends Component{
              "instrumento":this.state.tempInstrumento,
              "marca": this.state.tempMarca,
              "modelo": this.state.tempModelo,
-             "imagen": this.state.tempImagen,
+             "imagen": this.state.selectedimagen,
              "precio": this.state.tempPrecio,
              "costoEnvio": this.state.tempCostoEnvio,
              "cantidadVendida": this.state.tempCantidadVendida,
@@ -138,7 +130,7 @@ class Informacion extends Component{
                     instrumento:this.state.tempInstrumento,
                     marca: this.state.tempMarca,
                     modelo: this.state.tempModelo,
-                    imagen: this.state.tempImagen,
+                    imagen: this.state.selectedimagen,
                     precio: this.state.tempPrecio,
                     costoEnvio: this.state.tempCostoEnvio,
                     cantidadVendida: this.state.tempCantidadVendida,
@@ -210,11 +202,12 @@ class Informacion extends Component{
                 <Container>                   
                     <Grid container>
                         <Grid item xs={5}>
-                            <Card style={{imagen}}>
+                            <Card >
                                 <CardMedia
                                     component="img"
                                     image={require(`../../../../Back/imagenes/${this.state.instrumentoEncontrado.imagen}`)}
                                     alt={this.state.instrumentoEncontrado.nombre}
+                                    style={{marginTop: '20%'}}
                                 />
                             </Card>
                         </Grid>
