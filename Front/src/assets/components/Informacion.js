@@ -13,6 +13,7 @@ import { Col, Form, FormGroup, Label, Input } from 'reactstrap';
 import { Service } from "./service";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
+
 var imagen = {
     width: '400px', 
     marginTop: '20px', 
@@ -40,6 +41,8 @@ class Informacion extends Component{
         super();
         this.state = {
             tempInstrumento: "",
+            selectedimagen: null,
+            FormGlobal: new FormData(),
             tempMarca: "",
             tempModelo: "",
             tempImagen: "blank.jpg",
@@ -144,8 +147,34 @@ class Informacion extends Component{
             })
             alert("Producto modificado exitosamente");
         })
+        this.Service.saveImage(this.state.FormGlobal)
+            .then(res => {
+                    console.log(res);
+            })
         this.handleCloseModal();
     }
+
+    uploadImagen = (e) => {
+        e.preventDefault();
+      
+          const selectedFile= e.target.files[0];
+      
+          console.log(selectedFile)
+        
+          const formData = new FormData();
+  
+          formData.append('imagen', selectedFile);
+  
+          console.log(formData.get('imagen'))
+  
+          this.setState({
+              selectedimagen: selectedFile.name,
+              FormGlobal : formData
+          })
+  
+          console.log(this.state.FormGlobal.get('imagen'))
+      
+      };
 
     componentDidMount() {
         this.Service.getOne(this.props.match.params.id)
@@ -173,6 +202,7 @@ class Informacion extends Component{
         }else{
           envio = `Costo de Envio Interior de Argentina $${this.state.instrumentoEncontrado.costoEnvio}`;
         }
+        
 
         return(
             <React.Fragment>
@@ -183,7 +213,7 @@ class Informacion extends Component{
                             <Card style={{imagen}}>
                                 <CardMedia
                                     component="img"
-                                    image={require(`../img/${this.state.instrumentoEncontrado.imagen}`)}
+                                    image={require(`../../../../Back/imagenes/${this.state.instrumentoEncontrado.imagen}`)}
                                     alt={this.state.instrumentoEncontrado.nombre}
                                 />
                             </Card>
@@ -259,10 +289,12 @@ class Informacion extends Component{
                                             <Input type="text" name="tempModelo" defaultValue={this.state.instrumentoEncontrado.modelo} onChange={this.handleInputChange} placeholder="Modelo" />
                                         </Col>
                                     </FormGroup>
-                                    <FormGroup row>
-                                        <Label for="exampleimagen" sm={2}>imagen:</Label>
+                                    <FormGroup row encType="multipart/form-data">
+                                        <Label for="exampleimagen" sm={2}>Nombre del imagen:</Label>
                                         <Col sm={10}>
-                                            <Input type="text" name="imagen" value={this.state.imagen} onChange={this.handleInputChange} placeholder="Nombre del imagen" />
+                                            <Col sm={8}>
+                                                <Input type="file" name="imagen" id="imagen" onChange={this.uploadImagen} title="Seleccione una imagen:" />
+                                            </Col>
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>

@@ -33,7 +33,9 @@ class Home extends Component {
             precio : null,
             costoEnvio : null,
             cantidadVendida : null,
-            descripcion :null   
+            descripcion :null,  
+            selectedimagen: null,
+            FormGlobal: new FormData(),
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -52,6 +54,9 @@ class Home extends Component {
         console.log(this.state.exampleInstrumento)
     }
 
+    fileSelectedHandler = (event) => {
+        console.log(event.target.files[0]);
+      };
 
     handleInputChange(event) {
         const target = event.target;
@@ -66,11 +71,15 @@ class Home extends Component {
     handleSubmit = (event) => {
 
         event.preventDefault();
+
+        console.log(this.state.FormGlobal.get('imagen'))
+        console.log("Submit")
+
         this.Service.save({
             "instrumento":this.state.instrumento,
             "marca": this.state.marca,
             "modelo": this.state.modelo,
-            "imagen": this.state.imagen,
+            "imagen": this.state.selectedimagen,
             "precio": this.state.precio,
             "costoEnvio": this.state.costoEnvio,
             "cantidadVendida": this.state.cantidadVendida,
@@ -83,7 +92,7 @@ class Home extends Component {
                     "instrumento": this.state.instrumento,
                     "marca": this.state.marca,
                     "modelo": this.state.modelo,
-                    "imagen": this.state.imagen,
+                    "imagen": this.state.selectedimagen,
                     "precio": this.state.precio,
                     "costoEnvio": this.state.costoEnvio,
                     "cantidadVendida": this.state.cantidadVendida,
@@ -91,11 +100,36 @@ class Home extends Component {
                 })
               })
             alert("Producto agregado");
+            
         })
+        this.Service.saveImage(this.state.FormGlobal)
+            .then(res => {
+                    console.log(res);
+            })
         this.handleCloseModal();
     }
 
+    uploadImagen = (e) => {
+      e.preventDefault();
+    
+        const selectedFile= e.target.files[0];
+    
+        console.log(selectedFile)
       
+        const formData = new FormData();
+
+        formData.append('imagen', selectedFile);
+
+        console.log(formData.get('imagen'))
+
+        this.setState({
+            selectedimagen: selectedFile.name,
+            FormGlobal : formData
+        })
+
+        console.log(this.state.FormGlobal.get('imagen'))
+    
+    };
 
     componentDidMount() {
         this.Service.getAll()
@@ -108,7 +142,6 @@ class Home extends Component {
     }
 
     render() {
-
         const instrumentos = this.state.instrumentosDB.map((instrumentos, i) => { // this saves everything from the mysql request to a local variable
             return ( 
             <Tarjeta 
@@ -145,16 +178,18 @@ class Home extends Component {
             )
         });
 
-//<Input type="text" name="descripcion" value={this.state.descripcion} onChange={this.handleInputChange} placeholder="Descripcion" />
         return(
             <React.Fragment>
                 <Navigation></Navigation>
 
                 <Container style={{maxWidth: '1800px'}}>
                     <Grid container>
-                        <Button variant="outlined" style={{marginTop: '30px', background: 'rgb(63, 81, 181)', color:'white'}} onClick={this.handleOpenModal}>
+                        <Grid sm={5}>
+                        <Button sm={5} variant="outlined" style={{marginTop: '30px', background: 'rgb(63, 81, 181)', color:'white'}} onClick={this.handleOpenModal}>
                             Agregar nuevo producto
                         </Button>
+                        
+                        </Grid>
                         <Modal isOpen={this.state.showModal} contentLabel="modal" style={customStyles} onRequestClose={this.handleCloseModal}>
                         <Form>
                             <FormGroup row>
@@ -175,10 +210,13 @@ class Home extends Component {
                                     <Input type="text" name="modelo" value={this.state.modelo} onChange={this.handleInputChange} placeholder="Modelo" />
                                 </Col>
                             </FormGroup>
-                            <FormGroup row>
+                            <FormGroup row encType="multipart/form-data">
                                 <Label for="exampleimagen" sm={2}>Nombre del imagen:</Label>
                                 <Col sm={10}>
-                                    <Input type="text" name="imagen" value={this.state.imagen} onChange={this.handleInputChange} placeholder="Nombre del imagen" />
+                                    <Col sm={8}>
+                                        <Input type="file" name="imagen" id="imagen" onChange={this.uploadImagen} title="Seleccione una imagen:" />
+                                    </Col>
+                                    
                                 </Col>
                             </FormGroup>
                             <FormGroup row>

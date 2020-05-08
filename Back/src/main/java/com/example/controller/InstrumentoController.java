@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import javax.transaction.Transactional;
+
 @Controller
 @RestController
 @RequestMapping(path="api/v1/instrumentos")
@@ -20,23 +23,19 @@ public class InstrumentoController extends BaseController<InstrumentoDTO>{
     }
 
     @PostMapping("/uploadImg")
-    public String uploadImg(@RequestParam("imageFile") MultipartFile imageFile) {
-        String value = "";
+    @CrossOrigin(origins = "*")
+    @Transactional
+    public ResponseEntity uploadImg(@RequestParam("imagen") MultipartFile[] imageFile) {
         try {
-            instrumentoService.saveImg(imageFile);
-            value = "..\\..\\..\\imagenes\\" + imageFile.getOriginalFilename();
-            return value;
+
+            return ResponseEntity.status(HttpStatus.OK).body(instrumentoService.saveImg(imageFile));
+
         } catch (Exception e) {
-            return "Error";
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"message\": \"Error. Please try again later.\"}");
+
         }
-    }
-    @DeleteMapping("/deleteImg")
-    public ResponseEntity deleteImg(@PathVariable String path) {
-        try {
-            instrumentoService.deleteImage(path);
-            return ResponseEntity.status(HttpStatus.OK).body("{\"Mensaje\": \"Imagen borrada\"}");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"Mensaje\": \"Error al borrar esta imagen.\"}");
-        }
+
+
     }
 }

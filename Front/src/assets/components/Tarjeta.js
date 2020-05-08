@@ -39,7 +39,8 @@ class Tarjeta extends Component {
           <CardMedia
             component="img"
             alt={this.props.nombre}
-            image={require(`../img/${this.props.imagen}`)}
+            image={require(`../../../../Back/imagenes/${this.props.imagen}`)}
+
           />
         </CardActionArea>
       </Card>

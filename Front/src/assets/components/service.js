@@ -16,4 +16,7 @@ export class Service {
   delete(id) {
     return axios.delete(this.baseUrl + id).then(console.log);
   }
+  saveImage(imagen) {
+    return axios.post(this.baseUrl + "uploadImg", imagen).then((res) => res.data);
+  }
 }
