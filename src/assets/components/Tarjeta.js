@@ -7,14 +7,13 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 
-var cardStyle = { // Fix this so there is only one style
+var cardStyle = {
   width: '400px', 
   marginTop: '20px', 
   marginBottom:'20px',
   marginRight:'20px',
 }
 var cardStyle2 = {
-  maxHeight:'500px',
   width: '400px', 
   marginTop: '20px', 
   marginBottom:'20px',
@@ -25,23 +24,21 @@ class Tarjeta extends Component {
   render(){
     let envio;
     if( this.props.costoEnvio === 'G'){
-      envio = <Typography style={{ color: 'green'}}><LocalShippingIcon/> Envió gratis a todo el país</Typography>; // uso el icono de react material
+      envio = <Typography><LocalShippingIcon/> Envió gratis a todo el país</Typography>;
     }else{
       envio = `Costo de Envio Interior de Argentina $${this.props.costoEnvio}`;
     }
 
-    //CardActionArea is the clickable part
 
     return(
     <React.Fragment>
       <Grid item xs={3}>
       <Card style={cardStyle2}>
-        <CardActionArea style={cardStyle} href={`detalleInstrumento/${this.props.id}`}> 
+        <CardActionArea style={cardStyle} href={`detalleInstrumento/${this.props.id}`}>
           <CardMedia
             component="img"
             alt={this.props.nombre}
-            image={require(`../../../../Back/imagenes/${this.props.imagen}`)}
-
+            image={require(`../img/${this.props.imagen}`)}
           />
         </CardActionArea>
       </Card>
