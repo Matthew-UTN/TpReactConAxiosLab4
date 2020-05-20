@@ -40,7 +40,7 @@ class Tarjeta extends Component {
           <CardMedia
             component="img"
             alt={this.props.nombre}
-            image={require(`../../../../Back/imagenes/${this.props.imagen}`)}
+            image={`http://localhost:9001/api/v1/instrumentos/getImage/${this.props.imagen}`}
 
           />
         </CardActionArea>

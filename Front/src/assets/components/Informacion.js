@@ -205,7 +205,7 @@ class Informacion extends Component{
                             <Card >
                                 <CardMedia
                                     component="img"
-                                    image={require(`../../../../Back/imagenes/${this.state.instrumentoEncontrado.imagen}`)}
+                                    image={`http://localhost:9001/api/v1/instrumentos/getImage/${this.state.instrumentoEncontrado.imagen}`}
                                     alt={this.state.instrumentoEncontrado.nombre}
                                     style={{marginTop: '20%'}}
                                 />
