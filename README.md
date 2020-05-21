@@ -18,5 +18,5 @@ En la terminal escribir npm i (tenes que estar seguro que estas adentro de la ca
  
 ## Paso N°5
 
-Cuando se termina de descargar los node modules escribe nom start
+Cuando se termina de descargar los node modules escribe npm start
 
